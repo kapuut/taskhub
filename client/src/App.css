@@ -1,0 +1,253 @@
+:root {
+  --ink: #0d2141;
+  --ink-soft: #425872;
+  --surface: #f2f7fb;
+  --card: #ffffff;
+  --accent: #0a7ea4;
+  --accent-strong: #086284;
+  --accent-gold: #f59e0b;
+  --danger: #b42318;
+  --line: #dbe4ee;
+}
+
+.app-shell {
+  min-height: 100vh;
+  padding: 2rem;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 5% 0%, #d9ecff 0, transparent 45%),
+    radial-gradient(circle at 95% 10%, #d7fff1 0, transparent 35%),
+    linear-gradient(180deg, #eff6ff 0%, #f7fbff 42%, #f2f7fb 100%),
+    var(--surface);
+}
+
+.app-header {
+  margin-bottom: 1.2rem;
+  background: linear-gradient(130deg, #0b294f 0%, #114d75 58%, #0a7ea4 100%);
+  color: #ffffff;
+  border-radius: 20px;
+  padding: 1.2rem 1.3rem;
+  box-shadow: 0 20px 40px rgba(13, 33, 65, 0.24);
+  animation: reveal 500ms ease;
+}
+
+.app-header p {
+  margin: 0;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  color: #b9e8ff;
+}
+
+.app-header h1 {
+  margin-top: 0.45rem;
+  margin-bottom: 0;
+  font-size: clamp(1.6rem, 2.3vw, 2.4rem);
+  line-height: 1.16;
+}
+
+.layout-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 360px) 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+.task-form,
+.content-panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: 0 16px 32px rgba(16, 32, 56, 0.1);
+}
+
+.task-form {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1rem;
+  position: sticky;
+  top: 1rem;
+}
+
+.task-form h2 {
+  margin: 0 0 0.3rem;
+  font-size: 1.2rem;
+}
+
+.task-form label,
+.task-filters label,
+.task-card-actions label {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.task-form input,
+.task-form textarea,
+.task-filters input,
+.task-filters select,
+.task-card-actions select {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.6rem 0.7rem;
+  font: inherit;
+}
+
+.task-form textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
+button {
+  border: 0;
+  border-radius: 10px;
+  background: linear-gradient(145deg, #1099c5 0%, #0a7ea4 100%);
+  color: #fff;
+  font-weight: 700;
+  padding: 0.62rem 1rem;
+  cursor: pointer;
+  transition: transform 180ms ease, background-color 180ms ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(145deg, #0b8bb4 0%, #086284 100%);
+}
+
+.content-panel {
+  padding: 1rem;
+  display: grid;
+  gap: 1rem;
+  animation: reveal 700ms ease;
+}
+
+.task-filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 0.8rem;
+}
+
+.task-filters div {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.task-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.7rem;
+}
+
+.task-summary article {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0.75rem;
+  background: linear-gradient(155deg, #f9fcff 0%, #edf7ff 100%);
+}
+
+.task-summary span {
+  display: block;
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+}
+
+.task-summary strong {
+  font-size: 1.3rem;
+}
+
+.task-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.task-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  background: linear-gradient(170deg, #ffffff 0%, #f6fbff 100%);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.task-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(16, 32, 56, 0.09);
+}
+
+.task-card h3 {
+  margin: 0;
+  font-size: 1.04rem;
+}
+
+.task-card p {
+  margin: 0.35rem 0;
+  color: var(--ink-soft);
+}
+
+.task-card small {
+  color: var(--ink-soft);
+}
+
+.task-card-actions {
+  min-width: 140px;
+  display: grid;
+  gap: 0.3rem;
+  align-content: start;
+}
+
+.danger {
+  background: linear-gradient(145deg, #d23c2f 0%, #b42318 100%);
+}
+
+.danger:hover {
+  background: linear-gradient(145deg, #bd2f23 0%, #912018 100%);
+}
+
+.loading-text,
+.empty-state {
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+.error-text {
+  margin: 0;
+  color: var(--danger);
+  font-weight: 700;
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 900px) {
+  .app-shell {
+    padding: 1rem;
+  }
+
+  .app-header {
+    padding: 1rem;
+  }
+
+  .layout-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .task-form {
+    position: static;
+  }
+
+  .task-card {
+    flex-direction: column;
+  }
+}
