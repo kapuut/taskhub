@@ -31,4 +31,16 @@ app.use(async (req, res, next) => {
 
 app.use("/api/tasks", taskRoutes);
 
+app.use("/api", (req, res) => {
+  res.status(404).json({ message: "API endpoint tidak ditemukan" });
+});
+
+app.use((err, req, res, next) => {
+  if (req.path.startsWith("/api")) {
+    return res.status(500).json({ message: "Terjadi kesalahan pada server", error: err.message });
+  }
+
+  next(err);
+});
+
 module.exports = app;
