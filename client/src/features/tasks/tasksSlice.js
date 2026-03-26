@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
 
-const API_BASE_URL =
-  process.env.REACT_APP_API_URL || "/api";
+const configuredBase = (process.env.REACT_APP_API_URL || "").trim();
+const defaultBase = window.location.hostname === "localhost" ? "http://localhost:5000/api" : "/api";
+const API_BASE_URL = configuredBase || defaultBase;
 const API_URL = `${API_BASE_URL}/tasks`;
 
 export const fetchTasks = createAsyncThunk("tasks/fetchTasks", async () => {
@@ -9,6 +10,7 @@ export const fetchTasks = createAsyncThunk("tasks/fetchTasks", async () => {
   if (!response.ok) {
     throw new Error("Gagal mengambil task dari server.");
   }
+
   return response.json();
 });
 
@@ -22,7 +24,8 @@ export const createTask = createAsyncThunk(
     });
 
     if (!response.ok) {
-      throw new Error("Gagal menambahkan task.");
+      const errorBody = await response.json().catch(() => null);
+      throw new Error(errorBody?.message || "Gagal menambahkan task.");
     }
 
     return response.json();
@@ -39,7 +42,8 @@ export const updateTask = createAsyncThunk(
     });
 
     if (!response.ok) {
-      throw new Error("Gagal mengubah task.");
+      const errorBody = await response.json().catch(() => null);
+      throw new Error(errorBody?.message || "Gagal mengubah task.");
     }
 
     return response.json();
@@ -52,7 +56,8 @@ export const deleteTask = createAsyncThunk("tasks/deleteTask", async (id) => {
   });
 
   if (!response.ok) {
-    throw new Error("Gagal menghapus task.");
+    const errorBody = await response.json().catch(() => null);
+    throw new Error(errorBody?.message || "Gagal menghapus task.");
   }
 
   return id;
@@ -95,19 +100,28 @@ const tasksSlice = createSlice({
       })
       .addCase(fetchTasks.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.error.message;
+        state.error = action.error.message || "Gagal memuat task dari server.";
       })
       .addCase(createTask.fulfilled, (state, action) => {
         state.items.unshift(action.payload);
       })
+      .addCase(createTask.rejected, (state, action) => {
+        state.error = action.error.message || "Gagal menambahkan task ke server.";
+      })
       .addCase(updateTask.fulfilled, (state, action) => {
-        const index = state.items.findIndex((task) => task._id === action.payload._id);
+        const index = state.items.findIndex((task) => (task.id ?? task._id) === (action.payload.id ?? action.payload._id));
         if (index !== -1) {
           state.items[index] = action.payload;
         }
       })
+      .addCase(updateTask.rejected, (state, action) => {
+        state.error = action.error.message || "Gagal memperbarui task di server.";
+      })
       .addCase(deleteTask.fulfilled, (state, action) => {
-        state.items = state.items.filter((task) => task._id !== action.payload);
+        state.items = state.items.filter((task) => (task.id ?? task._id) !== action.payload);
+      })
+      .addCase(deleteTask.rejected, (state, action) => {
+        state.error = action.error.message || "Gagal menghapus task dari server.";
       });
   },
 });

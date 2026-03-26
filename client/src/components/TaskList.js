@@ -8,7 +8,7 @@ function TaskList({ tasks, onDelete, onStatusChange }) {
   return (
     <ul className="task-list">
       {tasks.map((task) => (
-        <li key={task._id} className="task-card">
+        <li key={task.id ?? task._id} className="task-card">
           <div>
             <h3>{task.title}</h3>
             <p>{task.description || "Tanpa deskripsi"}</p>
@@ -18,12 +18,12 @@ function TaskList({ tasks, onDelete, onStatusChange }) {
           </div>
 
           <div className="task-card-actions">
-            <label htmlFor={`status-${task._id}`}>Status</label>
+            <label htmlFor={`status-${task.id ?? task._id}`}>Status</label>
             <select
-              id={`status-${task._id}`}
+              id={`status-${task.id ?? task._id}`}
               value={task.status}
               onChange={(event) =>
-                onStatusChange(task._id, { status: event.target.value })
+                onStatusChange(task.id ?? task._id, { status: event.target.value })
               }
             >
               {STATUSES.map((status) => (
@@ -35,7 +35,7 @@ function TaskList({ tasks, onDelete, onStatusChange }) {
 
             <button
               className="danger"
-              onClick={() => onDelete(task._id)}
+              onClick={() => onDelete(task.id ?? task._id)}
               type="button"
             >
               Hapus
